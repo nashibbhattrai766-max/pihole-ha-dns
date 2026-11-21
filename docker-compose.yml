@@ -1,0 +1,33 @@
+# Secondary Pi-hole (v6) + nebula-sync, running on any Debian Docker host (here: the backup server).
+# Pi-hole uses host networking so it answers DNS on the host's own IP. Unbound runs on the host
+# itself on 127.0.0.1:5335 (see unbound/pi-hole.conf) and is Pi-hole's only upstream.
+#
+#   cp .env.example .env && cp nebula.env.example nebula.env   # fill both in
+#   docker compose up -d
+services:
+  pihole:
+    image: pihole/pihole:latest
+    container_name: pihole2
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ:-Etc/UTC}
+      FTLCONF_webserver_api_password: ${PIHOLE_PASSWORD:?set PIHOLE_PASSWORD in .env}
+      FTLCONF_dns_upstreams: "127.0.0.1#5335"
+      FTLCONF_dns_listeningMode: "ALL"
+    volumes:
+      - ./etc-pihole:/etc/pihole
+    cap_add:
+      - SYS_NICE
+    security_opt:
+      - apparmor=unconfined        # needed on Proxmox kernels ("setpriv: initgroups failed")
+
+  nebula-sync:
+    image: ghcr.io/lovelaze/nebula-sync:v0.11.3
+    container_name: nebula-sync
+    restart: unless-stopped
+    env_file: nebula.env
+    security_opt:
+      - apparmor=unconfined
+    depends_on:
+      - pihole

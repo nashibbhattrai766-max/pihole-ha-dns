@@ -1,0 +1,7 @@
+# never commit secrets
+.env
+*.env
+!*.env.example
+*.key
+*.pem
+etc-pihole/
