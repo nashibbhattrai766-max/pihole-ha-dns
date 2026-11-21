@@ -130,6 +130,10 @@ It also runs **gravity** on the replica after each sync, so new adlists download
 
 From now on, **make all changes on the primary only**. The secondary catches up within the hour.
 
+nebula-sync log, a successful run every hour:
+
+![nebula-sync log](images/nebula-sync-log.png)
+
 ## 8. Build: hand both servers to clients
 
 In the router's LAN/DHCP settings, set **DNS server 1 = 10.0.0.2** and **DNS server 2 = 10.0.0.20**. Clients pick up the change when they renew their lease; reconnecting Wi-Fi forces it.
@@ -157,6 +161,14 @@ Also set **Proxmox nodes and other servers** to use only these two (*node → Sy
 | `dnssec-failed.org` | `SERVFAIL` (bad signatures rejected) |
 | **Failover:** stop the primary (`pct shutdown <id>`) and browse on a phone/PC | everything keeps working; queries appear in Pi-hole 2's log |
 | Sync: add a test domain to the primary's deny list, wait for the next hour | it appears on the secondary |
+
+### Both servers in action
+
+| Primary (does most of the work) | Secondary (fallback, kept in sync) |
+|---|---|
+| ![Pi-hole 1](images/pihole-primary.png) | ![Pi-hole 2](images/pihole-secondary.png) |
+
+Same **1.75 million** blocked domains on both, both resolving through their local Unbound (`localhost#5335`). The primary blocks about 38 % of all queries.
 
 ## 11. Running it day to day
 
