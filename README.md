@@ -96,7 +96,7 @@ Then point Pi-hole at it: *Settings → DNS*. Untick every upstream and add the 
 On the second host:
 
 ```bash
-git clone https://github.com/useruser766-max/pihole-ha-dns && cd pihole-ha-dns
+git clone https://github.com/nashibbhattrai766-max/pihole-ha-dns && cd pihole-ha-dns
 cp .env.example .env              # set PIHOLE_PASSWORD
 docker compose up -d pihole
 docker logs -f pihole2            # wait for "FTL started"
@@ -138,9 +138,9 @@ Also set **Proxmox nodes and other servers** to use only these two (*node → Sy
 
 ## 9. Build: monitoring
 
-- **Zabbix** asks each Pi-hole to resolve a name every minute (`net.dns[10.0.0.20,google.com,A,2,2]`). If either fails to answer for 3 minutes, a **High** alert goes to my phone ([zabbix-monitoring](https://github.com/useruser766-max/zabbix-monitoring)).
+- **Zabbix** asks each Pi-hole to resolve a name every minute (`net.dns[10.0.0.20,google.com,A,2,2]`). If either fails to answer for 3 minutes, a **High** alert goes to my phone ([zabbix-monitoring](https://github.com/nashibbhattrai766-max/zabbix-monitoring)).
 - On the backup server, a collector also reports whether **Unbound**, the **Pi-hole container** and **nebula-sync** are running, and when the last successful sync happened. An alert fires if there has been no sync for 3 hours.
-- The Grafana rack screen has **DNS 1 / DNS 2** status tiles and a Pi-hole screen with queries, block rate and top blocked domains ([grafana-rack-dashboards](https://github.com/useruser766-max/grafana-rack-dashboards)).
+- The Grafana rack screen has **DNS 1 / DNS 2** status tiles and a Pi-hole screen with queries, block rate and top blocked domains ([grafana-rack-dashboards](https://github.com/nashibbhattrai766-max/grafana-rack-dashboards)).
 
 ## 10. Verify it works
 
